@@ -8,6 +8,13 @@ namespace AppAgendaContatosCurso
         static void Main(string[] args)
         {
             ExecutarSelect();
+            ExecutarInsert();
+            ExecutarSelect();
+            ExecutarUpdate();
+            ExecutarSelect();
+            ExecutarDelete();
+            ExecutarSelect();
+
         }
         public static void ExecutarSelect()
         {
@@ -42,6 +49,107 @@ namespace AppAgendaContatosCurso
                     }
 
 
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erro ao estabelecer conexão com o banco de dados.{ex.Message}");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+        public static void ExecutarInsert()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string sql = "INSERT INTO CONTATO(NOME, EMAIL, DT_INC) VALUES(@Nome, @Email, GETDATE())";
+
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@Nome", "Lodovino João Todeschini");
+                        command.Parameters.AddWithValue("@Email", "todeschinilj@gmail.com");
+                        
+
+                        var qtdLinhasAfetadas = command.ExecuteNonQuery();
+                        Console.WriteLine($"Linhas Afetadas: {qtdLinhasAfetadas}");
+                        Console.WriteLine(string.Empty);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erro ao estabelecer conexão com o banco de dados.{ex.Message}");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+        public static void ExecutarUpdate()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string sql = "UPDATE CONTATO SET NOME = @Nome, EMAIL = @Email WHERE ID = @Id";
+
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+
+
+                        command.Parameters.AddWithValue("@Id", 1);
+                        command.Parameters.AddWithValue("@Nome", "Felipe Todeschini Gusatti");
+                        command.Parameters.AddWithValue("@Email", "todeschini_1992@gmail.com");
+
+
+                        var qtdLinhasAfetadas = command.ExecuteNonQuery();
+                        Console.WriteLine($"Linhas Afetadas: {qtdLinhasAfetadas}");
+                        Console.WriteLine(string.Empty);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erro ao estabelecer conexão com o banco de dados.{ex.Message}");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+        public static void ExecutarDelete()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string sql = "DELETE FROM CONTATO WHERE ID = @Id";
+
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+
+
+                        command.Parameters.AddWithValue("@Id", 5);
+                        
+
+
+                        var qtdLinhasAfetadas = command.ExecuteNonQuery();
+                        Console.WriteLine($"Linhas Afetadas: {qtdLinhasAfetadas}");
+                        Console.WriteLine(string.Empty);
+                    }
                 }
                 catch (Exception ex)
                 {
